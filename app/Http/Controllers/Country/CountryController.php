@@ -14,7 +14,11 @@ class CountryController extends Controller
     }
 
     public function countryById($id){
-        return response()->json(CountryModel:: find($id),200);
+        $country=CountryModel:: find($id);
+        if(is_null($country)){
+            return response()->json('Record Not found!',404);
+        }
+        return response()->json($country,200);
     }
     
     public function countrysave(Request $request){
@@ -24,7 +28,12 @@ class CountryController extends Controller
         return response()->json($country,201);
     
     }
-    public function countryUpdate(Request $request, CountryModel $country){
+    public function countryUpdate(Request $request, $id){
+        $country=CountryModel::find($id);
+        if(is_null($country)){
+            return response()->json('Record Not found!',404);
+        }
+      
         $country->update($request->all());
         return response()->json($country,200);
     }
